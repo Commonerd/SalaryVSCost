@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salary Vs Cost - 한일 평균 연봉 vs 물가 비교기</title>
+    <meta
+      name="description"
+      content="Salary Vs Cost는 한국과 일본의 평균 연봉과 물가를 비교하여 실질적인 삶의 질을 분석하는 서비스입니다. 주거비용을 고려한 실질 구매력 지수로 당신의 경제적 미래를 예측해보세요."
+    />
+    <meta
+      name="keywords"
+      content="한일 연봉, 일본 연봉, 한국 연봉, 일본 물가, 한국 물가, 한국 생활비, 일본 생활비, 한일 이민, 해외 취업, 실질 구매력, 전세, 월세"
+    />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <style>
+      /* 글로벌 스타일 */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f7f6;
+        color: #333;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 1.5rem 0;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.5em;
+        letter-spacing: 1px;
+      }
+
+      nav {
+        background-color: #34495e;
+        padding: 0.8rem 0;
+        text-align: center;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: #4a667b;
+      }
+
+      main {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 2rem auto;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        flex-grow: 1;
+      }
+
+      section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      section:last-child {
+        border-bottom: none;
+      }
+
+      h2 {
+        color: #2c3e50;
+        font-size: 1.8em;
+        margin-bottom: 1.2rem;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      .input-group {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .input-group label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .input-group input[type="number"],
+      .input-group select {
+        padding: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #3498db;
+        color: white;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      .results {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .results h3 {
+        color: #2c3e50;
+        font-size: 1.5em;
+        margin-bottom: 1rem;
+      }
+
+      .results p {
+        margin-bottom: 0.8rem;
+        font-size: 1.1em;
+      }
+
+      .results strong {
+        color: #e74c3c; /* Red for emphasis, can be changed */
+      }
+
+      .chart-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap; /* Allows charts to wrap on smaller screens */
+        gap: 20px;
+      }
+
+      .chart-box {
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%; /* Default to full width for small screens */
+        max-width: 45%; /* Adjust for two columns on larger screens */
+        box-sizing: border-box;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1.5rem;
+        background-color: #2c3e50;
+        color: white;
+        margin-top: auto; /* Push footer to the bottom */
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .language-switcher {
+        text-align: right;
+        padding-bottom: 1rem;
+      }
+
+      .language-switcher select {
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2em;
+        }
+
+        main {
+          padding: 1rem;
+          margin: 1rem auto;
+        }
+
+        .chart-box {
+          max-width: 100%; /* Full width on smaller screens */
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8em;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Salary Vs Cost</h1>
+      <p data-i18n="tagline">한일 평균 연봉 vs 물가 비교기</p>
+    </header>
+
+    <nav>
+      <a href="#calculator" data-i18n="nav.calculator">비교 계산기</a>
+      <a href="#about" data-i18n="nav.about">서비스 소개</a>
+      <a href="#contact" data-i18n="nav.contact">문의</a>
+    </nav>
+
+    <main>
+      <div class="language-switcher">
+        <label for="language-select" data-i18n="language.select"
+          >언어 선택:</label
+        >
+        <select id="language-select">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="ar">العربية</option>
+          <option value="ru">Русский</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
+
+      <section id="calculator">
+        <h2 data-i18n="section.calculator.title">나의 실질 구매력 비교하기</h2>
+        <p data-i18n="section.calculator.description">
+          아래 정보를 입력하여 한국과 일본에서의 실질 구매력을 비교해보세요.
+          주거 형태에 따른 비용 차이를 반영하여 더욱 정확한 분석을 제공합니다.
+        </p>
+
+        <div class="input-group">
+          <label for="korea-salary" data-i18n="input.korea.salary"
+            >한국 연봉 (세전, 만원):</label
+          >
+          <input type="number" id="korea-salary" placeholder="예: 4000" />
+        </div>
+
+        <div class="input-group">
+          <label for="korea-housing-type" data-i18n="input.korea.housing.type"
+            >한국 주거 형태:</label
+          >
+          <select id="korea-housing-type">
+            <option value="전세" data-i18n="housing.jeonse">전세</option>
+            <option value="월세" data-i18n="housing.wolse">월세</option>
+          </select>
+        </div>
+        <div class="input-group" id="korea-housing-cost-group">
+          <label for="korea-housing-cost" data-i18n="input.korea.housing.cost"
+            >한국 월 주거비 (만원):</label
+          >
+          <input type="number" id="korea-housing-cost" placeholder="예: 50" />
+        </div>
+
+        <div class="input-group">
+          <label for="japan-salary" data-i18n="input.japan.salary"
+            >일본 연봉 (세전, 엔):</label
+          >
+          <input type="number" id="japan-salary" placeholder="예: 4000000" />
+        </div>
+
+        <div class="input-group">
+          <label for="japan-housing-cost" data-i18n="input.japan.housing.cost"
+            >일본 월 주거비 (엔):</label
+          >
+          <input
+            type="number"
+            id="japan-housing-cost"
+            placeholder="예: 70000"
+          />
+        </div>
+
+        <button onclick="calculateComparison()" data-i18n="button.calculate">
+          비교하기
+        </button>
+
+        <div class="results" id="results" style="display: none">
+          <h3 data-i18n="results.title">비교 결과</h3>
+          <p>
+            <strong data-i18n="results.korea.net.salary"
+              >한국 월 실수령액:</strong
+            >
+            <span id="korea-net-salary"></span>
+          </p>
+          <p>
+            <strong data-i18n="results.japan.net.salary"
+              >일본 월 실수령액:</strong
+            >
+            <span id="japan-net-salary"></span>
+          </p>
+          <p>
+            <strong data-i18n="results.korea.disposable.income"
+              >한국 월 가처분소득 (주거비 제외):</strong
+            >
+            <span id="korea-disposable-income"></span>
+          </p>
+          <p>
+            <strong data-i18n="results.japan.disposable.income"
+              >일본 월 가처분소득 (주거비 제외):</strong
+            >
+            <span id="japan-disposable-income"></span>
+          </p>
+          <p>
+            <strong data-i18n="results.real.purchasing.power.index"
+              >실질 구매력 지수 (한국 기준 100):</strong
+            >
+            <span id="real-purchasing-power-index"></span>
+          </p>
+          <p>
+            <strong data-i18n="results.recommendation">추천:</strong>
+            <span id="recommendation"></span>
+          </p>
+
+          <div class="chart-container">
+            <div class="chart-box">
+              <h4 data-i18n="chart.salary.title">월 실수령액 비교</h4>
+              <canvas id="salaryChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4 data-i18n="chart.disposable.income.title">
+                월 가처분소득 비교
+              </h4>
+              <canvas id="disposableIncomeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <h2 data-i18n="section.about.title">서비스 소개</h2>
+        <p data-i18n="section.about.p1">
+          Salary Vs Cost는 한국과 일본의 평균 연봉과 물가를 비교하여 여러분의
+          현명한 경제적 결정을 돕는 웹 서비스입니다. 단순한 숫자 비교를 넘어,
+          각국의 고유한 주거 형태(전세, 월세)를 반영하여 **실질 구매력 지수**를
+          산출합니다. 이 지수는 주거비용을 제외한 월 가처분소득을 기반으로 하여,
+          여러분이 실제로 체감할 수 있는 삶의 질을 예측하는 데 도움을 줍니다.
+        </p>
+        <p data-i18n="section.about.p2">
+          우리의 목표는 해외 이민이나 취업을 고려하는 분들, 또는 단순히 한일
+          양국의 경제 상황에 관심 있는 모든 분들에게 정확하고 유용한 정보를
+          제공하는 것입니다. 저희 서비스는 지속적으로 데이터를 업데이트하고
+          기능을 개선하여 최고의 사용자 경험을 제공할 것을 약속드립니다.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h2 data-i18n="section.contact.title">문의</h2>
+        <p data-i18n="section.contact.p1">
+          서비스 관련 문의사항이나 개선 아이디어가 있다면 언제든지 연락 주세요.
+        </p>
+        <p data-i18n="section.contact.email">
+          이메일:
+          <a href="mailto:contact@salaryvscost.com">contact@salaryvscost.com</a>
+        </p>
+        <p data-i18n="section.contact.social">소셜 미디어: (추후 추가 예정)</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        &copy; <span id="current-year"></span> Salary Vs Cost. All rights
+        reserved.
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const translations = {
+        ko: {
+          tagline: "한일 평균 연봉 vs 물가 비교기",
+          "nav.calculator": "비교 계산기",
+          "nav.about": "서비스 소개",
+          "nav.contact": "문의",
+          "language.select": "언어 선택:",
+          "section.calculator.title": "나의 실질 구매력 비교하기",
+          "section.calculator.description":
+            "아래 정보를 입력하여 한국과 일본에서의 실질 구매력을 비교해보세요. 주거 형태에 따른 비용 차이를 반영하여 더욱 정확한 분석을 제공합니다.",
+          "input.korea.salary": "한국 연봉 (세전, 만원):",
+          "input.korea.housing.type": "한국 주거 형태:",
+          "housing.jeonse": "전세",
+          "housing.wolse": "월세",
+          "input.korea.housing.cost": "한국 월 주거비 (만원):",
+          "input.japan.salary": "일본 연봉 (세전, 엔):",
+          "input.japan.housing.cost": "일본 월 주거비 (엔):",
+          "button.calculate": "비교하기",
+          "results.title": "비교 결과",
+          "results.korea.net.salary": "한국 월 실수령액:",
+          "results.japan.net.salary": "일본 월 실수령액:",
+          "results.korea.disposable.income":
+            "한국 월 가처분소득 (주거비 제외):",
+          "results.japan.disposable.income":
+            "일본 월 가처분소득 (주거비 제외):",
+          "results.real.purchasing.power.index":
+            "실질 구매력 지수 (한국 기준 100):",
+          "results.recommendation": "추천:",
+          "chart.salary.title": "월 실수령액 비교",
+          "chart.disposable.income.title": "월 가처분소득 비교",
+          "section.about.title": "서비스 소개",
+          "section.about.p1":
+            "Salary Vs Cost는 한국과 일본의 평균 연봉과 물가를 비교하여 여러분의 현명한 경제적 결정을 돕는 웹 서비스입니다. 단순한 숫자 비교를 넘어, 각국의 고유한 주거 형태(전세, 월세)를 반영하여 **실질 구매력 지수**를 산출합니다. 이 지수는 주거비용을 제외한 월 가처분소득을 기반으로 하여, 여러분이 실제로 체감할 수 있는 삶의 질을 예측하는 데 도움을 줍니다.",
+          "section.about.p2":
+            "우리의 목표는 해외 이민이나 취업을 고려하는 분들, 또는 단순히 한일 양국의 경제 상황에 관심 있는 모든 분들에게 정확하고 유용한 정보를 제공하는 것입니다. 저희 서비스는 지속적으로 데이터를 업데이트하고 기능을 개선하여 최고의 사용자 경험을 제공할 것을 약속드립니다.",
+          "section.contact.title": "문의",
+          "section.contact.p1":
+            "서비스 관련 문의사항이나 개선 아이디어가 있다면 언제든지 연락 주세요.",
+          "section.contact.email": "이메일:",
+          "section.contact.social": "소셜 미디어: (추후 추가 예정)",
+          "rec.korea":
+            "입력하신 정보로는 한국에서의 경제적 삶이 더 유리할 수 있습니다.",
+          "rec.japan":
+            "입력하신 정보로는 일본에서의 경제적 삶이 더 유리할 수 있습니다.",
+          "rec.similar": "두 나라의 경제적 삶은 유사한 수준으로 보입니다.",
+          "error.input": "모든 필드를 올바르게 입력해주세요.",
+        },
+        en: {
+          tagline: "Korea vs Japan Salary & Cost Comparison",
+          "nav.calculator": "Calculator",
+          "nav.about": "About Us",
+          "nav.contact": "Contact",
+          "language.select": "Select Language:",
+          "section.calculator.title": "Compare Your Real Purchasing Power",
+          "section.calculator.description":
+            "Enter your information below to compare your real purchasing power in Korea and Japan. We provide a more accurate analysis by reflecting housing cost differences based on housing types.",
+          "input.korea.salary": "Korean Annual Salary (Pre-tax, KRW 10K):",
+          "input.korea.housing.type": "Korean Housing Type:",
+          "housing.jeonse": "Jeonse (Lump-sum deposit)",
+          "housing.wolse": "Wolse (Monthly rent)",
+          "input.korea.housing.cost": "Korean Monthly Housing Cost (KRW 10K):",
+          "input.japan.salary": "Japanese Annual Salary (Pre-tax, JPY):",
+          "input.japan.housing.cost": "Japanese Monthly Housing Cost (JPY):",
+          "button.calculate": "Compare",
+          "results.title": "Comparison Results",
+          "results.korea.net.salary": "Korean Monthly Net Salary:",
+          "results.japan.net.salary": "Japanese Monthly Net Salary:",
+          "results.korea.disposable.income":
+            "Korean Monthly Disposable Income (Excl. Housing):",
+          "results.japan.disposable.income":
+            "Japanese Monthly Disposable Income (Excl. Housing):",
+          "results.real.purchasing.power.index":
+            "Real Purchasing Power Index (Korea = 100):",
+          "results.recommendation": "Recommendation:",
+          "chart.salary.title": "Monthly Net Salary Comparison",
+          "chart.disposable.income.title":
+            "Monthly Disposable Income Comparison",
+          "section.about.title": "About Our Service",
+          "section.about.p1":
+            "Salary Vs Cost is a web service that helps you make informed financial decisions by comparing average salaries and living costs in Korea and Japan. Beyond simple numerical comparisons, we calculate a **Real Purchasing Power Index** that reflects each country's unique housing forms (Jeonse, Wolse). This index, based on monthly disposable income excluding housing costs, helps you predict your actual quality of life.",
+          "section.about.p2":
+            "Our goal is to provide accurate and useful information to anyone considering overseas immigration or employment, or simply interested in the economic situations of Korea and Japan. We are committed to continuously updating data and improving features to provide the best user experience.",
+          "section.contact.title": "Contact Us",
+          "section.contact.p1":
+            "If you have any questions or ideas for improvement, please feel free to contact us.",
+          "section.contact.email": "Email:",
+          "section.contact.social": "Social Media: (To be added later)",
+          "rec.korea":
+            "Based on your input, economic life in Korea might be more advantageous.",
+          "rec.japan":
+            "Based on your input, economic life in Japan might be more advantageous.",
+          "rec.similar":
+            "The economic quality of life in both countries seems similar.",
+          "error.input": "Please enter all fields correctly.",
+        },
+        es: {
+          tagline: "Comparador de Salarios y Costos Corea vs Japón",
+          "nav.calculator": "Calculadora",
+          "nav.about": "Sobre Nosotros",
+          "nav.contact": "Contacto",
+          "language.select": "Seleccionar idioma:",
+          "section.calculator.title": "Compare su poder adquisitivo real",
+          "section.calculator.description":
+            "Introduzca su información a continuación para comparar su poder adquisitivo real en Corea y Japón. Proporcionamos un análisis más preciso al reflejar las diferencias de costos de vivienda según los tipos de vivienda.",
+          "input.korea.salary":
+            "Salario anual coreano (antes de impuestos, KRW 10K):",
+          "input.korea.housing.type": "Tipo de vivienda coreana:",
+          "housing.jeonse": "Jeonse (depósito global)",
+          "housing.wolse": "Wolse (alquiler mensual)",
+          "input.korea.housing.cost":
+            "Costo mensual de vivienda coreana (KRW 10K):",
+          "input.japan.salary":
+            "Salario anual japonés (antes de impuestos, JPY):",
+          "input.japan.housing.cost":
+            "Costo mensual de vivienda japonés (JPY):",
+          "button.calculate": "Comparar",
+          "results.title": "Resultados de la comparación",
+          "results.korea.net.salary": "Salario neto mensual coreano:",
+          "results.japan.net.salary": "Salario neto mensual japonés:",
+          "results.korea.disposable.income":
+            "Ingreso disponible mensual coreano (excl. vivienda):",
+          "results.japan.disposable.income":
+            "Ingreso disponible mensual japonés (excl. vivienda):",
+          "results.real.purchasing.power.index":
+            "Índice de poder adquisitivo real (Corea = 100):",
+          "results.recommendation": "Recomendación:",
+          "chart.salary.title": "Comparación de salario neto mensual",
+          "chart.disposable.income.title":
+            "Comparación de ingresos disponibles mensuales",
+          "section.about.title": "Sobre nuestro servicio",
+          "section.about.p1":
+            "Salary Vs Cost es un servicio web que le ayuda a tomar decisiones financieras informadas al comparar los salarios promedio y los costos de vida en Corea y Japón. Más allá de las simples comparaciones numéricas, calculamos un **Índice de Poder Adquisitivo Real** que refleja las formas de vivienda únicas de cada país (Jeonse, Wolse). Este índice, basado en el ingreso disponible mensual excluyendo los costos de vivienda, le ayuda a predecir su calidad de vida real.",
+          "section.about.p2":
+            "Nuestro objetivo es proporcionar información precisa y útil a cualquier persona que esté considerando la inmigración o el empleo en el extranjero, o simplemente interesada en las situaciones económicas de Corea y Japón. Nos comprometemos a actualizar continuamente los datos y mejorar las funciones para proporcionar la mejor experiencia de usuario.",
+          "section.contact.title": "Contáctenos",
+          "section.contact.p1":
+            "Si tiene alguna pregunta o idea para mejorar, no dude en contactarnos.",
+          "section.contact.email": "Correo electrónico:",
+          "section.contact.social":
+            "Redes sociales: (Se añadirán más adelante)",
+          "rec.korea":
+            "Según su entrada, la vida económica en Corea podría ser más ventajosa.",
+          "rec.japan":
+            "Según su entrada, la vida económica en Japón podría ser más ventajosa.",
+          "rec.similar":
+            "La calidad de vida económica en ambos países parece similar.",
+          "error.input":
+            "Por favor, introduzca todos los campos correctamente.",
+        },
+        ar: {
+          tagline: "مقارنة الرواتب والتكاليف بين كوريا واليابان",
+          "nav.calculator": "الحاسبة",
+          "nav.about": "عنا",
+          "nav.contact": "اتصل بنا",
+          "language.select": "اختر اللغة:",
+          "section.calculator.title": "قارن قوتك الشرائية الحقيقية",
+          "section.calculator.description":
+            "أدخل معلوماتك أدناه لمقارنة قوتك الشرائية الحقيقية في كوريا واليابان. نقدم تحليلاً أكثر دقة من خلال عكس فروق تكاليف السكن بناءً على أنواع السكن.",
+          "input.korea.salary":
+            "الراتب السنوي الكوري (قبل الضريبة، 10 آلاف وون كوري):",
+          "input.korea.housing.type": "نوع السكن الكوري:",
+          "housing.jeonse": "جيونسي (إيداع دفعة واحدة)",
+          "housing.wolse": "وولسي (إيجار شهري)",
+          "input.korea.housing.cost":
+            "تكلفة السكن الشهرية الكورية (10 آلاف وون كوري):",
+          "input.japan.salary":
+            "الراتب السنوي الياباني (قبل الضريبة، ين ياباني):",
+          "input.japan.housing.cost":
+            "تكلفة السكن الشهرية اليابانية (ين ياباني):",
+          "button.calculate": "قارن",
+          "results.title": "نتائج المقارنة",
+          "results.korea.net.salary": "الراتب الشهري الصافي الكوري:",
+          "results.japan.net.salary": "الراتب الشهري الصافي الياباني:",
+          "results.korea.disposable.income":
+            "الدخل المتاح الشهري الكوري (باستثناء السكن):",
+          "results.japan.disposable.income":
+            "الدخل المتاح الشهري الياباني (باستثناء السكن):",
+          "results.real.purchasing.power.index":
+            "مؤشر القوة الشرائية الحقيقية (كوريا = 100):",
+          "results.recommendation": "التوصية:",
+          "chart.salary.title": "مقارنة الراتب الشهري الصافي",
+          "chart.disposable.income.title": "مقارنة الدخل المتاح الشهري",
+          "section.about.title": "عن خدمتنا",
+          "section.about.p1":
+            "Salary Vs Cost هي خدمة ويب تساعدك على اتخاذ قرارات مالية مستنيرة من خلال مقارنة متوسط الرواتب وتكاليف المعيشة في كوريا واليابان. بالإضافة إلى المقارنات الرقمية البسيطة، نحسب **مؤشر القوة الشرائية الحقيقية** الذي يعكس أشكال السكن الفريدة لكل بلد (جيونسي، وولسي). يساعدك هذا المؤشر، المستند إلى الدخل المتاح الشهري باستثناء تكاليف السكن، على التنبؤ بجودة حياتك الفعلية.",
+          "section.about.p2":
+            "هدفنا هو توفير معلومات دقيقة ومفيدة لأي شخص يفكر في الهجرة أو التوظيف في الخارج، أو ببساطة مهتم بالوضع الاقتصادي في كوريا واليابان. نحن ملتزمون بتحديث البيانات وتحسين الميزات باستمرار لتوفير أفضل تجربة للمستخدم.",
+          "section.contact.title": "اتصل بنا",
+          "section.contact.p1":
+            "إذا كان لديك أي أسئلة أو أفكار للتحسين، فلا تتردد في الاتصال بنا.",
+          "section.contact.email": "البريد الإلكتروني:",
+          "section.contact.social": "وسائل التواصل الاجتماعي: (ستضاف لاحقًا)",
+          "rec.korea":
+            "بناءً على إدخالك، قد تكون الحياة الاقتصادية في كوريا أكثر فائدة.",
+          "rec.japan":
+            "بناءً على إدخالك، قد تكون الحياة الاقتصادية في اليابان أكثر فائدة.",
+          "rec.similar": "تبدو نوعية الحياة الاقتصادية في كلا البلدين متشابهة.",
+          "error.input": "الرجاء إدخال جميع الحقول بشكل صحيح.",
+        },
+        ru: {
+          tagline: "Сравнение зарплат и стоимости жизни в Корее и Японии",
+          "nav.calculator": "Калькулятор",
+          "nav.about": "О нас",
+          "nav.contact": "Контакты",
+          "language.select": "Выбрать язык:",
+          "section.calculator.title":
+            "Сравните свою реальную покупательную способность",
+          "section.calculator.description":
+            "Введите свою информацию ниже, чтобы сравнить свою реальную покупательную способность в Корее и Японии. Мы предоставляем более точный анализ, отражая различия в стоимости жилья в зависимости от типов жилья.",
+          "input.korea.salary":
+            "Годовая зарплата в Корее (до налогов, 10 тыс. KRW):",
+          "input.korea.housing.type": "Тип жилья в Корее:",
+          "housing.jeonse": "Чонсе (депозит)",
+          "housing.wolse": "Вольсе (ежемесячная аренда)",
+          "input.korea.housing.cost":
+            "Ежемесячная стоимость жилья в Корее (10 тыс. KRW):",
+          "input.japan.salary": "Годовая зарплата в Японии (до налогов, JPY):",
+          "input.japan.housing.cost":
+            "Ежемесячная стоимость жилья в Японии (JPY):",
+          "button.calculate": "Сравнить",
+          "results.title": "Результаты сравнения",
+          "results.korea.net.salary": "Ежемесячная чистая зарплата в Корее:",
+          "results.japan.net.salary": "Ежемесячная чистая зарплата в Японии:",
+          "results.korea.disposable.income":
+            "Ежемесячный располагаемый доход в Корее (без учета жилья):",
+          "results.japan.disposable.income":
+            "Ежемесячный располагаемый доход в Японии (без учета жилья):",
+          "results.real.purchasing.power.index":
+            "Индекс реальной покупательной способности (Корея = 100):",
+          "results.recommendation": "Рекомендация:",
+          "chart.salary.title": "Сравнение ежемесячной чистой зарплаты",
+          "chart.disposable.income.title":
+            "Сравнение ежемесячного располагаемого дохода",
+          "section.about.title": "О нашем сервисе",
+          "section.about.p1":
+            "Salary Vs Cost — это веб-сервис, который помогает вам принимать обоснованные финансовые решения, сравнивая средние зарплаты и стоимость жизни в Корее и Японии. Помимо простых числовых сравнений, мы рассчитываем **Индекс реальной покупательной способности**, который отражает уникальные формы жилья каждой страны (чонсе, вольсе). Этот индекс, основанный на ежемесячном располагаемом доходе без учета расходов на жилье, помогает вам прогнозировать свое фактическое качество жизни.",
+          "section.about.p2":
+            "Наша цель — предоставить точную и полезную информацию всем, кто рассматривает иммиграцию или трудоустройство за границей, или просто интересуется экономическим положением Кореи и Японии. Мы обязуемся постоянно обновлять данные и улучшать функции, чтобы обеспечить наилучший пользовательский опыт.",
+          "section.contact.title": "Свяжитесь с нами",
+          "section.contact.p1":
+            "Если у вас есть какие-либо вопросы или идеи по улучшению, пожалуйста, свяжитесь с нами.",
+          "section.contact.email": "Электронная почта:",
+          "section.contact.social": "Социальные сети: (будут добавлены позже)",
+          "rec.korea":
+            "Исходя из ваших данных, экономическая жизнь в Корее может быть более выгодной.",
+          "rec.japan":
+            "Исходя из ваших данных, экономическая жизнь в Японии может быть более выгодной.",
+          "rec.similar":
+            "Экономическое качество жизни в обеих странах кажется схожим.",
+          "error.input": "Пожалуйста, правильно введите все поля.",
+        },
+        ja: {
+          tagline: "日韓平均年収 vs 物価比較機",
+          "nav.calculator": "比較計算機",
+          "nav.about": "サービス紹介",
+          "nav.contact": "お問い合わせ",
+          "language.select": "言語選択:",
+          "section.calculator.title": "あなたの実質購買力を比較する",
+          "section.calculator.description":
+            "以下の情報を入力して、韓国と日本での実質購買力を比較してください。住居形態による費用差を反映し、より正確な分析を提供します。",
+          "input.korea.salary": "韓国の年収 (税引前、万ウォン):",
+          "input.korea.housing.type": "韓国の住居形態:",
+          "housing.jeonse": "チョンセ (まとまった保証金)",
+          "housing.wolse": "ウォルセ (月払い家賃)",
+          "input.korea.housing.cost": "韓国の月間住居費 (万ウォン):",
+          "input.japan.salary": "日本の年収 (税引前、円):",
+          "input.japan.housing.cost": "日本の月間住居費 (円):",
+          "button.calculate": "比較する",
+          "results.title": "比較結果",
+          "results.korea.net.salary": "韓国の月間手取り額:",
+          "results.japan.net.salary": "日本の月間手取り額:",
+          "results.korea.disposable.income":
+            "韓国の月間可処分所得 (住居費除く):",
+          "results.japan.disposable.income":
+            "日本の月間可処分所得 (住居費除く):",
+          "results.real.purchasing.power.index":
+            "実質購買力指数 (韓国基準100):",
+          "results.recommendation": "推奨:",
+          "chart.salary.title": "月間手取り額比較",
+          "chart.disposable.income.title": "月間可処分所得比較",
+          "section.about.title": "サービス紹介",
+          "section.about.p1":
+            "Salary Vs Costは、韓国と日本の平均年収と物価を比較し、皆様の賢明な経済的決定を支援するウェブサービスです。単純な数字の比較を超えて、各国の固有の住居形態（チョンセ、ウォルセ）を反映した**実質購買力指数**を算出します。この指数は、住居費を除いた月間可処分所得に基づいており、皆様が実際に体感できる生活の質を予測するのに役立ちます。",
+          "section.about.p2":
+            "私たちの目標は、海外移住や就職を検討している方々、または単に日韓両国の経済状況に関心のあるすべての方々に、正確で有用な情報を提供することです。私たちは、最高のユーザー体験を提供するために、データを継続的に更新し、機能を改善することをお約束します。",
+          "section.contact.title": "お問い合わせ",
+          "section.contact.p1":
+            "サービスに関するご質問や改善のアイデアがございましたら、お気軽にご連絡ください。",
+          "section.contact.email": "メール:",
+          "section.contact.social": "ソーシャルメディア: (後日追加予定)",
+          "rec.korea":
+            "入力された情報では、韓国での経済生活がより有利になる可能性があります。",
+          "rec.japan":
+            "入力された情報では、日本での経済生活がより有利になる可能性があります。",
+          "rec.similar": "両国の経済的な生活水準は似ているようです。",
+          "error.input": "すべての項目を正しく入力してください。",
+        },
+        zh: {
+          tagline: "韩日平均年薪 vs 物价比较器",
+          "nav.calculator": "比较计算器",
+          "nav.about": "服务介绍",
+          "nav.contact": "联系我们",
+          "language.select": "选择语言:",
+          "section.calculator.title": "比较您的实际购买力",
+          "section.calculator.description":
+            "在下方输入您的信息，比较您在韩国和日本的实际购买力。我们通过反映不同住房类型下的住房成本差异，提供更准确的分析。",
+          "input.korea.salary": "韩国年薪 (税前，万韩元):",
+          "input.korea.housing.type": "韩国住房类型:",
+          "housing.jeonse": "全租 (一次性大额保证金)",
+          "housing.wolse": "月租 (每月租金)",
+          "input.korea.housing.cost": "韩国每月住房成本 (万韩元):",
+          "input.japan.salary": "日本年薪 (税前，日元):",
+          "input.japan.housing.cost": "日本每月住房成本 (日元):",
+          "button.calculate": "比较",
+          "results.title": "比较结果",
+          "results.korea.net.salary": "韩国每月税后收入:",
+          "results.japan.net.salary": "日本每月税后收入:",
+          "results.korea.disposable.income": "韩国每月可支配收入 (不含住房):",
+          "results.japan.disposable.income": "日本每月可支配收入 (不含住房):",
+          "results.real.purchasing.power.index":
+            "实际购买力指数 (以韩国为100):",
+          "results.recommendation": "推荐:",
+          "chart.salary.title": "每月税后收入比较",
+          "chart.disposable.income.title": "每月可支配收入比较",
+          "section.about.title": "服务介绍",
+          "section.about.p1":
+            "Salary Vs Cost是一个帮助您做出明智财务决策的网络服务，通过比较韩国和日本的平均年薪和物价。我们不仅仅是简单的数字比较，更计算了一个反映两国独特住房形式（全租、月租）的**实际购买力指数**。该指数基于扣除住房成本后的每月可支配收入，有助于您预测实际的生活质量。",
+          "section.about.p2":
+            "我们的目标是为所有考虑海外移民或就业，或仅仅对韩日两国经济状况感兴趣的人们提供准确有用的信息。我们承诺持续更新数据和改进功能，以提供最佳用户体验。",
+          "section.contact.title": "联系我们",
+          "section.contact.p1":
+            "如果您有任何问题或改进意见，请随时与我们联系。",
+          "section.contact.email": "电子邮件:",
+          "section.contact.social": "社交媒体: (稍后添加)",
+          "rec.korea": "根据您的输入，在韩国的经济生活可能更有利。",
+          "rec.japan": "根据您的输入，在日本的经济生活可能更有利。",
+          "rec.similar": "两国的经济生活水平似乎相似。",
+          "error.input": "请正确输入所有字段。",
+        },
+      };
+
+      let currentLanguage = "ko"; // Default language
+
+      // Function to update the year in the footer
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+
+      // Chart instances
+      let salaryChartInstance;
+      let disposableIncomeChartInstance;
+
+      // Function to calculate net salary (simplified example, real tax calculations are complex)
+      function calculateNetSalary(annualSalary, country) {
+        // Simplified tax rates for demonstration. Real rates are much more complex.
+        // These values are illustrative and should be updated with more accurate data.
+        const taxRates = {
+          korea: 0.15, // Example: 15% average for a wide range
+          japan: 0.12, // Example: 12% average for a wide range
+        };
+
+        const monthlySalary = annualSalary / 12;
+        const netMonthlySalary = monthlySalary * (1 - taxRates[country]);
+        return netMonthlySalary;
+      }
+
+      // Function to calculate and display comparison
+      function calculateComparison() {
+        const koreaSalaryRaw = parseFloat(
+          document.getElementById("korea-salary").value
+        );
+        const koreaHousingType =
+          document.getElementById("korea-housing-type").value;
+        const koreaHousingCostRaw = parseFloat(
+          document.getElementById("korea-housing-cost").value
+        );
+        const japanSalaryRaw = parseFloat(
+          document.getElementById("japan-salary").value
+        );
+        const japanHousingCostRaw = parseFloat(
+          document.getElementById("japan-housing-cost").value
+        );
+
+        if (
+          isNaN(koreaSalaryRaw) ||
+          isNaN(koreaHousingCostRaw) ||
+          isNaN(japanSalaryRaw) ||
+          isNaN(japanHousingCostRaw)
+        ) {
+          alert(translations[currentLanguage]["error.input"]);
+          return;
+        }
+
+        // Convert Korean salary and housing cost to actual KRW
+        const koreaSalary = koreaSalaryRaw * 10000;
+        const koreaHousingCost = koreaHousingCostRaw * 10000;
+
+        // Calculate net monthly salary (simplified)
+        const koreaNetMonthlySalary = calculateNetSalary(koreaSalary, "korea");
+        const japanNetMonthlySalary = calculateNetSalary(
+          japanSalaryRaw,
+          "japan"
+        ); // Japan salary is already in JPY
+
+        // Calculate disposable income
+        // For Korea: If '전세', monthly housing cost might be zero or very low (maintenance fees).
+        // For simplicity in this demo, if '전세', we might consider a lower 'effective' monthly housing cost or just the given input.
+        // For '월세', it's the direct monthly rent.
+        // Here, we just use the input directly for '월세' and assume '전세' might have a small implicit cost or just directly use given '월세' for a fairer comparison if user provides it.
+        // A real service would have more sophisticated logic for Jeonse (e.g., opportunity cost of deposit).
+        const koreaDisposableIncome = koreaNetMonthlySalary - koreaHousingCost;
+        const japanDisposableIncome =
+          japanNetMonthlySalary - japanHousingCostRaw;
+
+        // Display results
+        document.getElementById("korea-net-salary").textContent =
+          formatCurrency(koreaNetMonthlySalary, "KRW");
+        document.getElementById("japan-net-salary").textContent =
+          formatCurrency(japanNetMonthlySalary, "JPY");
+        document.getElementById("korea-disposable-income").textContent =
+          formatCurrency(koreaDisposableIncome, "KRW");
+        document.getElementById("japan-disposable-income").textContent =
+          formatCurrency(japanDisposableIncome, "JPY");
+
+        // Calculate Real Purchasing Power Index
+        // Need an exchange rate for comparison. Let's use a hypothetical average.
+        // For a real service, this should be fetched from an API.
+        const KRW_TO_JPY_RATE = 0.11; // 1 KRW = 0.11 JPY (example rate, needs real data)
+        const JPY_TO_KRW_RATE = 9.09; // 1 JPY = 9.09 KRW (example rate, needs real data)
+
+        const koreaDisposableIncomeInJPY =
+          koreaDisposableIncome * KRW_TO_JPY_RATE;
+        const japanDisposableIncomeInKRW =
+          japanDisposableIncome * JPY_TO_KRW_RATE;
+
+        let realPurchasingPowerIndex;
+        if (koreaDisposableIncome > 0) {
+          // Compare disposable incomes in a common currency (e.g., JPY)
+          realPurchasingPowerIndex =
+            (japanDisposableIncome / koreaDisposableIncomeInJPY) * 100;
+          // Or if we want to compare in KRW
+          // realPurchasingPowerIndex = (japanDisposableIncomeInKRW / koreaDisposableIncome) * 100;
+        } else {
+          realPurchasingPowerIndex = 0; // Handle division by zero
+        }
+
+        document.getElementById("real-purchasing-power-index").textContent =
+          realPurchasingPowerIndex.toFixed(2);
+
+        // Recommendation logic
+        let recommendationText = "";
+        const threshold = 10; // Percentage difference threshold
+        if (realPurchasingPowerIndex > 100 + threshold) {
+          recommendationText = translations[currentLanguage]["rec.japan"];
+        } else if (realPurchasingPowerIndex < 100 - threshold) {
+          recommendationText = translations[currentLanguage]["rec.korea"];
+        } else {
+          recommendationText = translations[currentLanguage]["rec.similar"];
+        }
+        document.getElementById("recommendation").textContent =
+          recommendationText;
+
+        document.getElementById("results").style.display = "block";
+
+        // Update charts
+        updateCharts(
+          koreaNetMonthlySalary,
+          japanNetMonthlySalary,
+          koreaDisposableIncome,
+          japanDisposableIncome
+        );
+
+        // Save to local storage
+        saveToLocalStorage();
+      }
+
+      // Function to format currency
+      function formatCurrency(amount, currency) {
+        if (currency === "KRW") {
+          return new Intl.NumberFormat("ko-KR", {
+            style: "currency",
+            currency: "KRW",
+          }).format(amount);
+        } else if (currency === "JPY") {
+          return new Intl.NumberFormat("ja-JP", {
+            style: "currency",
+            currency: "JPY",
+          }).format(amount);
+        }
+        return amount.toFixed(0); // Default if currency not specified
+      }
+
+      // Function to update charts
+      function updateCharts(koreaNet, japanNet, koreaDisp, japanDisp) {
+        const salaryCtx = document
+          .getElementById("salaryChart")
+          .getContext("2d");
+        const disposableIncomeCtx = document
+          .getElementById("disposableIncomeChart")
+          .getContext("2d");
+
+        // Destroy existing chart instances if they exist
+        if (salaryChartInstance) {
+          salaryChartInstance.destroy();
+        }
+        if (disposableIncomeChartInstance) {
+          disposableIncomeChartInstance.destroy();
+        }
+
+        // Create new chart instances
+        salaryChartInstance = new Chart(salaryCtx, {
+          type: "bar",
+          data: {
+            labels: ["한국", "일본"],
+            datasets: [
+              {
+                label: translations[currentLanguage]["chart.salary.title"],
+                data: [koreaNet, japanNet],
+                backgroundColor: ["#3498db", "#e74c3c"],
+                borderColor: ["#2980b9", "#c0392b"],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: translations[currentLanguage]["chart.salary.title"],
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        disposableIncomeChartInstance = new Chart(disposableIncomeCtx, {
+          type: "bar",
+          data: {
+            labels: ["한국", "일본"],
+            datasets: [
+              {
+                label:
+                  translations[currentLanguage][
+                    "chart.disposable.income.title"
+                  ],
+                data: [koreaDisp, japanDisp],
+                backgroundColor: ["#2ecc71", "#f1c40f"],
+                borderColor: ["#27ae60", "#f39c12"],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: translations[currentLanguage][
+                  "chart.disposable.income.title"
+                ],
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
+      // Language switching
+      document
+        .getElementById("language-select")
+        .addEventListener("change", function () {
+          currentLanguage = this.value;
+          setLanguage(currentLanguage);
+          // Recalculate and re-render if results are already displayed
+          if (document.getElementById("results").style.display === "block") {
+            calculateComparison();
+          }
+        });
+
+      function setLanguage(lang) {
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+          if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+          }
+        });
+
+        // Update placeholder texts
+        document.getElementById("korea-salary").placeholder = translations[
+          lang
+        ]["input.korea.salary"].includes("예:")
+          ? translations[lang]["input.korea.salary"].split("예:")[1].trim()
+          : "e.g., 4000";
+        document.getElementById("korea-housing-cost").placeholder =
+          translations[lang]["input.korea.housing.cost"].includes("예:")
+            ? translations[lang]["input.korea.housing.cost"]
+                .split("예:")[1]
+                .trim()
+            : "e.g., 50";
+        document.getElementById("japan-salary").placeholder = translations[
+          lang
+        ]["input.japan.salary"].includes("예:")
+          ? translations[lang]["input.japan.salary"].split("예:")[1].trim()
+          : "e.g., 4000000";
+        document.getElementById("japan-housing-cost").placeholder =
+          translations[lang]["input.japan.housing.cost"].includes("예:")
+            ? translations[lang]["input.japan.housing.cost"]
+                .split("예:")[1]
+                .trim()
+            : "e.g., 70000";
+
+        // Update options in select if necessary (e.g. for housing types)
+        document.querySelector(
+          '#korea-housing-type option[value="전세"]'
+        ).textContent = translations[lang]["housing.jeonse"];
+        document.querySelector(
+          '#korea-housing-type option[value="월세"]'
+        ).textContent = translations[lang]["housing.wolse"];
+      }
+
+      // Handle Korea housing type change
+      document
+        .getElementById("korea-housing-type")
+        .addEventListener("change", function () {
+          const housingCostGroup = document.getElementById(
+            "korea-housing-cost-group"
+          );
+          if (this.value === "전세") {
+            // For simplicity, we might hide/show or change label for Jeonse
+            // In a real app, Jeonse would require deposit amount and calculation of its opportunity cost
+            housingCostGroup.style.display = "block"; // Still show for input, but user might enter 0 or small maintenance
+            document.getElementById("korea-housing-cost").value = ""; // Clear for new input
+            document.getElementById("korea-housing-cost").placeholder =
+              translations[currentLanguage][
+                "input.korea.housing.cost"
+              ].includes("예:")
+                ? translations[currentLanguage]["input.korea.housing.cost"]
+                    .split("예:")[1]
+                    .trim()
+                : "e.g., 50 (for monthly cost if any, or maintenance)";
+            document
+              .getElementById("korea-housing-cost-group")
+              .querySelector("label").textContent =
+              translations[currentLanguage]["input.korea.housing.cost"];
+
+            // Specific guidance for Jeonse for local understanding
+            if (currentLanguage === "ko") {
+              document
+                .getElementById("korea-housing-cost-group")
+                .querySelector("label").textContent =
+                "한국 월 주거비 (만원 - 관리비, 또는 전세 대출 이자 등):";
+              document.getElementById("korea-housing-cost").placeholder =
+                "예: 10 (관리비 등)";
+            }
+          } else {
+            // 월세
+            housingCostGroup.style.display = "block";
+            document.getElementById("korea-housing-cost").value = "";
+            document.getElementById("korea-housing-cost").placeholder =
+              translations[currentLanguage][
+                "input.korea.housing.cost"
+              ].includes("예:")
+                ? translations[currentLanguage]["input.korea.housing.cost"]
+                    .split("예:")[1]
+                    .trim()
+                : "e.g., 50";
+            document
+              .getElementById("korea-housing-cost-group")
+              .querySelector("label").textContent =
+              translations[currentLanguage]["input.korea.housing.cost"];
+          }
+        });
+
+      // Local Storage functions
+      function saveToLocalStorage() {
+        const data = {
+          koreaSalary: document.getElementById("korea-salary").value,
+          koreaHousingType: document.getElementById("korea-housing-type").value,
+          koreaHousingCost: document.getElementById("korea-housing-cost").value,
+          japanSalary: document.getElementById("japan-salary").value,
+          japanHousingCost: document.getElementById("japan-housing-cost").value,
+          language: currentLanguage,
+        };
+        localStorage.setItem("salaryVsCostData", JSON.stringify(data));
+      }
+
+      function loadFromLocalStorage() {
+        const savedData = localStorage.getItem("salaryVsCostData");
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          document.getElementById("korea-salary").value =
+            data.koreaSalary || "";
+          document.getElementById("korea-housing-type").value =
+            data.koreaHousingType || "월세"; // Default to 월세 if not found
+          document.getElementById("korea-housing-cost").value =
+            data.koreaHousingCost || "";
+          document.getElementById("japan-salary").value =
+            data.japanSalary || "";
+          document.getElementById("japan-housing-cost").value =
+            data.japanHousingCost || "";
+
+          // Set language from local storage, fallback to browser default if not set
+          const browserLang = navigator.language.split("-")[0];
+          currentLanguage =
+            data.language || (translations[browserLang] ? browserLang : "ko");
+          document.getElementById("language-select").value = currentLanguage;
+          setLanguage(currentLanguage);
+
+          // Re-trigger housing type change to update label if necessary
+          document
+            .getElementById("korea-housing-type")
+            .dispatchEvent(new Event("change"));
+
+          // Recalculate if all necessary inputs are present
+          if (
+            data.koreaSalary &&
+            data.koreaHousingCost &&
+            data.japanSalary &&
+            data.japanHousingCost
+          ) {
+            calculateComparison();
+          }
+        } else {
+          // If no saved data, set initial language based on browser preference
+          const browserLang = navigator.language.split("-")[0];
+          currentLanguage = translations[browserLang] ? browserLang : "ko";
+          document.getElementById("language-select").value = currentLanguage;
+          setLanguage(currentLanguage);
+          document
+            .getElementById("korea-housing-type")
+            .dispatchEvent(new Event("change")); // Initialize housing type label
+        }
+      }
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", loadFromLocalStorage);
+
+      // Add event listener for input changes to save automatically
+      document.querySelectorAll("input, select").forEach((element) => {
+        element.addEventListener("change", saveToLocalStorage);
+        element.addEventListener("keyup", saveToLocalStorage); // For real-time saving as user types
+      });
+    </script>
+  </body>
+</html>
